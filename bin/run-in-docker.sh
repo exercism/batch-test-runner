@@ -33,14 +33,14 @@ output_dir=$(realpath "${3%/}")
 mkdir -p "${output_dir}"
 
 # Build the Docker image
-docker build --rm -t exercism/test-runner .
+docker build --rm -t exercism/batch-test-runner .
 
 # Run the Docker image using the settings mimicking the production environment
+# TODO: figure out to use --read-only
 docker run \
     --rm \
     --network none \
-    --read-only \
     --mount type=bind,src="${solution_dir}",dst=/solution \
     --mount type=bind,src="${output_dir}",dst=/output \
     --mount type=tmpfs,dst=/tmp \
-    exercism/test-runner "${slug}" /solution /output 
+    exercism/batch-test-runner "${slug}" /solution /output 

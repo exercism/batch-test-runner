@@ -16,16 +16,16 @@
 set -e
 
 # Build the Docker image
-docker build --rm -t exercism/test-runner .
+docker build --rm -t exercism/batch-test-runner .
 
 # Run the Docker image using the settings mimicking the production environment
+# TODO: figure out to use --read-only
 docker run \
     --rm \
     --network none \
-    --read-only \
     --mount type=bind,src="${PWD}/tests",dst=/opt/test-runner/tests \
     --mount type=tmpfs,dst=/tmp \
     --volume "${PWD}/bin/run-tests.sh:/opt/test-runner/bin/run-tests.sh" \
     --workdir /opt/test-runner \
     --entrypoint /opt/test-runner/bin/run-tests.sh \
-    exercism/test-runner
+    exercism/batch-test-runner

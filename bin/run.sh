@@ -23,6 +23,7 @@ fi
 
 slug="$1"
 solution_dir=$(realpath "${2%/}")
+wine_solution_dir="/root/.wine/drive_c/users/root/Documents/"
 output_dir=$(realpath "${3%/}")
 results_file="${output_dir}/results.json"
 
@@ -31,7 +32,8 @@ mkdir -p "${output_dir}"
 
 echo "${slug}: testing..."
 
-cd "${solution_dir}"
+cp -R "${solution_dir}/*" "${wine_solution_dir}"
+cd "${wine_solution_dir}"
 
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it

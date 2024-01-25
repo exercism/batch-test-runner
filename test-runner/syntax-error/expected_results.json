@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "error",
-  "message": "TODO: replace with correct output"
+  "message": "Leap year not divisible by 4 in common year"
 }

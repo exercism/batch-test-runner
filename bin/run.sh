@@ -32,17 +32,10 @@ mkdir -p "${output_dir}"
 
 echo "${slug}: testing..."
 
-cp -R "${solution_dir}/*" "${wine_solution_dir}"
-cd "${wine_solution_dir}"
-
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
 test_file=$(jq -r '.files.test[0]' "${solution_dir}/.meta/config.json")
-wine cmd /c "${test_file}"
-
-test_output=$(false)
-# TODO: substitute "false" with the actual command to run the test:
-# test_output=$(command_to_run_tests 2>&1)
+test_output=$(wine cmd /c "${test_file}" 2>&1)
 
 # Write the results.json file based on the exit code of the command that was 
 # just executed that tested the implementation file

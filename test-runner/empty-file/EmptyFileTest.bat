@@ -24,7 +24,8 @@ REM ---------------------------------------------------
     REM Test Case End /\/\/\
     REM --------------------
 
-    CALL :ExportResultAsJson
+    CALL :ResolveStatus
+    exit /b %errorlevel%
 REM End of Main
 
 REM ---------------------------------------------------
@@ -65,38 +66,23 @@ for %%I in (%slug%.bat) do (
 )
 GOTO :EOF REM Go back to the line after the call to :CheckEmptyFile
 
-:ExportResultAsJson
+:ResolveStatus
 set "status="
 if %isEmpty%==true (
-    set "status=fail"
-    set "message=The file is empty."
+    REM status: Fail
+    REM message: The file is empty.
+    exit /b 2
 ) else (
     if %failCount% gtr 0 (
-        set "status=fail"
-        set "message=Leap year not divisible by 4 in common year"
+        REM status: Fail
+        REM message: The test failed.
+        exit /b 1
     ) else (
         if %failCount% equ 0 (
-            set "status=pass"
+            REM status: Pass
+            exit /b 0
         )
     )
-)
-
-REM Export result as JSON
-if %status%==pass (
-(
-  echo {
-  echo   "version": 1,
-  echo   "status": "%status%"
-  echo }
-) > results.json
-) else (
-(
-  echo {
-  echo   "version": 1,
-  echo   "status": "%status%",
-  echo   "message": "%message%"
-  echo }
-) > results.json
 )
 GOTO :EOF REM Go back to the line after the call to :ExportResultAsJson
 

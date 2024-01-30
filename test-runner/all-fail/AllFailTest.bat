@@ -13,12 +13,14 @@ REM ---------------------------------------------------
     REM Test Case Start \/\/
     REM --------------------
     set "expected=true"
+    set "if_success=Test passed"
+    set "if_failed=Test failed: The year should be divided into four."
     CALL :Assert 1996
-    if %errorlevel%==0 (echo Test passed) else (echo Test failed)
 
     set "expected=false"
+    set "if_success=Test passed"
+    set "if_failed=Test failed: 2015 shouldn't be divided into four."
     CALL :Assert 2015
-    if %errorlevel%==0 (echo Test passed) else (echo Test failed)
 
     REM --------------------
     REM Test Case End /\/\/\
@@ -42,10 +44,24 @@ del stdout.bin
 
 REM Check if the result is correct
 if "%result%" == "%expected%" (
+    if defined if_success (
+        echo %if_success%
+
+        REM Reset the variable to avoid duplicating the message.
+        set "if_success="
+    )
+
     REM If the result is correct, exit with code 0
     set /a successCount+=1
     exit /b 0
 ) else (
+    if defined if_failed (
+        echo %if_failed%
+
+        REM Reset the variable to avoid duplicating the message.
+        set "if_failed="
+    )
+
     REM If the result is incorrect, exit with code 1
     set /a failCount+=1
     exit /b 1

@@ -32,6 +32,8 @@ mkdir -p "${output_dir}"
 
 echo "${slug}: testing..."
 
+cd "${solution_dir}"
+
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
 test_file=$(jq -r '.files.test[0]' "${solution_dir}/.meta/config.json")

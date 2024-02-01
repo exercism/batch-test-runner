@@ -37,12 +37,7 @@ cd "${solution_dir}"
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
 test_file=$(jq -r '.files.test[0]' "${solution_dir}/.meta/config.json")
-
-# Run wine with block networking to prevent the tests from making network calls
-test_output=$(sudo unshare -n runuser fabian -c "wine cmd /c \"${test_file}\"" 2>&1)
-
-# Original command that was used to run the tests
-# test_output=$(wine cmd /c "${test_file}" 2>&1)
+test_output=$(wine cmd /c "${test_file}" 2>&1)
 
 # Write the results.json file based on the exit code of the command that was 
 # just executed that tested the implementation file

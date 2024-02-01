@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "message": "Leap year not divisible by 4 in common year"
+  "message": "Test passed\r\nTest passed\r\nTest passed\r\nTest passed\r\nTest failed\r\nTest failed\r\nTest passed\r\nTest passed\r\nTest failed\r"
 }

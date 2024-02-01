@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "message": "Leap year not divisible by 4 in common year"
+  "message": "Test failed: The year should be divided into four.\r\nTest failed: 2015 shouldn't be divided into four.\r"
 }

@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "message": "The file is empty."
+  "message": "Test failed\r\nTest failed\r"
 }

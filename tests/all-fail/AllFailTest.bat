@@ -7,20 +7,25 @@ REM ---------------------------------------------------
     REM Initalize result variable
     set "slug=AllFail"
 
-    CALL :CheckEmptyFile
+    CALL :Initialize
 
     REM --------------------
     REM Test Case Start \/\/
     REM --------------------
     set "expected=true"
     set "if_success=Test passed"
-    set "if_failed=Test failed: The year should be divided into four."
+    set "if_failed=Test failed: '1996' should be divided into four."
     CALL :Assert 1996
 
     set "expected=false"
     set "if_success=Test passed"
-    set "if_failed=Test failed: 2015 shouldn't be divided into four."
+    set "if_failed=Test failed: '2015' shouldn't be divided into four."
     CALL :Assert 2015
+
+    set "expected=false"
+    set "if_success=Test passed"
+    set "if_failed=Test failed: Expected value to be '^%expected%', but got '^%stdout%'."
+    CALL :Assert 2017
 
     REM --------------------
     REM Test Case End /\/\/\
@@ -35,20 +40,21 @@ REM Assert [..Parameters(up to 9)]
 REM ---------------------------------------------------
 GOTO :End REM Prevents the code below from being executed
 :Assert
-set "result="
+set "stdout="
 
 REM Run the program and capture the output then delete the file
 CALL %slug%.bat %~1 %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9 > stdout.bin 2>&1
-set /p result=<stdout.bin
+set /p stdout=<stdout.bin
 del stdout.bin
 
 REM Check if the result is correct
-if "%result%" == "%expected%" (
+if "%stdout%" == "%expected%" (
     if defined if_success (
         echo %if_success%
 
         REM Reset the variable to avoid duplicating the message.
         set "if_success="
+        set "if_failed="
     )
 
     REM If the result is correct, exit with code 0
@@ -59,6 +65,7 @@ if "%result%" == "%expected%" (
         echo %if_failed%
 
         REM Reset the variable to avoid duplicating the message.
+        set "if_success="
         set "if_failed="
     )
 
@@ -68,37 +75,23 @@ if "%result%" == "%expected%" (
 )
 GOTO :EOF REM Go back to the line after the call to :Assert
 
-:CheckEmptyFile
+:Initialize
 REM It's for initialize, not about checking empty file
-set successCount=0
-set failCount=0
-
-for %%I in (%slug%.bat) do (
-    if %%~zI equ 0 (
-        set "isEmpty=true"
-    ) else (
-        set "isEmpty=false"
-    )
-)
+set "successCount=0"
+set "failCount=0"
 GOTO :EOF REM Go back to the line after the call to :CheckEmptyFile
 
 :ResolveStatus
 set "status="
-if %isEmpty%==true (
+if %failCount% gtr 0 (
     REM status: Fail
-    REM message: The file is empty.
-    exit /b 2
+    REM message: The test failed.
+    exit /b 1
+
 ) else (
-    if %failCount% gtr 0 (
-        REM status: Fail
-        REM message: The test failed.
-        exit /b 1
-    ) else (
-        if %failCount% equ 0 (
-            REM status: Pass
-            exit /b 0
-        )
-    )
+    REM status: Pass
+    exit /b 0
+    
 )
 GOTO :EOF REM Go back to the line after the call to :ExportResultAsJson
 

@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "message": "TODO: replace with correct output"
+  "message": "Test failed: '1996' should be divided into four.\r\nTest failed: '2015' shouldn't be divided into four.\r"
 }

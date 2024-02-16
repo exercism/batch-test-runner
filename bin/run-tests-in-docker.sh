@@ -15,17 +15,21 @@
 # Stop executing when a command returns a non-zero return code
 set -e
 
+# Create an internal network to not have wine wait for a while when
+# getting the local IP address
+docker network inspect internal > /dev/null 2>&1 || docker network create --internal internal
+
 # Build the Docker image
-docker build --rm -t exercism/test-runner .
+docker build --rm -t exercism/batch-test-runner .
 
 # Run the Docker image using the settings mimicking the production environment
-docker run \
+# TODO: figure out to use --read-only
+time docker run \
     --rm \
-    --network none \
-    --read-only \
+    --network internal \
     --mount type=bind,src="${PWD}/tests",dst=/opt/test-runner/tests \
     --mount type=tmpfs,dst=/tmp \
     --volume "${PWD}/bin/run-tests.sh:/opt/test-runner/bin/run-tests.sh" \
     --workdir /opt/test-runner \
     --entrypoint /opt/test-runner/bin/run-tests.sh \
-    exercism/test-runner
+    exercism/batch-test-runner

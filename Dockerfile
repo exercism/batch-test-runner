@@ -1,7 +1,9 @@
-FROM alpine:3.18
+FROM alpine:3.19
 
-# install packages required to run the tests
-RUN apk add --no-cache jq coreutils
+RUN apk update && apk add --no-cache jq wine
+
+# Pre-initialize wine
+RUN wine cmd
 
 WORKDIR /opt/test-runner
 COPY . .

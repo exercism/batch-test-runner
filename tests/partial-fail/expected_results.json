@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "message": "TODO: replace with correct output"
+  "message": "Test failed: '2015' shouldn't be divided into four.\r\nTest failed: '1970' shouldn't be divided into four.\r\nTest failed: '1996' should be divided into four.\r\nTest failed: '1960' should be divided into four.\r\nTest failed: '2100' shouldn't be divided into four hundred.\r\nTest failed: '1900' shouldn't be divided into four hundred.\r\nTest failed: '2000' should be divided into four hundred.\r\nTest failed: '2400' should be divided into four hundred.\r\nTest failed: '1800' shouldn't be divided into four hundred.\r"
 }
